@@ -1,20 +1,18 @@
-from selenium import webdriver
+# pip install selenium --upgrade
+# pip install webdriver-manager --upgrade
+
 import os
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.support.ui import WebDriverWait
 from time import sleep
-from selenium.webdriver.common.action_chains import ActionChains
+from selenium import webdriver
+import chromedriver_autoinstaller
+from selenium.webdriver.chrome.options import Options
+
+chromedriver_autoinstaller.install()
+navegador = webdriver.Chrome()
 
 email_cadastrado = os.getenv('EMAIL_CADASTRADO')
 senha = os.getenv('SENHA_CADASTRADA')
 
-chrome_options = Options()
-chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
-chrome_options.add_argument("--disable-blink-features=AutomationControlled")
-navegador = webdriver.Chrome(options=chrome_options)
-wait = WebDriverWait(navegador, 20)
 tempos = {'tempo_carregamento': 2, 'tempo_final': 5, 'clear': 0.1}
 
 def quadro (frase):
