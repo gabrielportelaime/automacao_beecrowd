@@ -1,19 +1,12 @@
 # pip install selenium --upgrade
 # pip install webdriver-manager --upgrade
 
+from cryptography.fernet import Fernet
 import os
 from time import sleep
 from selenium import webdriver
 import chromedriver_autoinstaller
 from selenium.webdriver.chrome.options import Options
-
-chromedriver_autoinstaller.install()
-navegador = webdriver.Chrome()
-
-email_cadastrado = os.getenv('EMAIL_CADASTRADO')
-senha = os.getenv('SENHA_CADASTRADA')
-
-tempos = {'tempo_carregamento': 2, 'tempo_final': 5, 'clear': 0.1}
 
 def quadro (frase):
     tamanho = len(frase)
@@ -34,6 +27,19 @@ def falta(problema):
         return True
     return False
 
+def descriptografar(senha_criptografada):
+    return fernet.decrypt(senha_criptografada.encode()).decode()
+
+chave = os.getenv('CHAVE')
+fernet = Fernet(chave)
+email_cadastrado = descriptografar(os.getenv('EMAIL_CADASTRADO'))
+senha = descriptografar(os.getenv('SENHA_CADASTRADA'))
+
+chromedriver_autoinstaller.install()
+navegador = webdriver.Chrome()
+
+tempos = {'tempo_carregamento': 2, 'tempo_final': 5, 'clear': 0.1}
+
 navegador.maximize_window()
 navegador.get("https://judge.beecrowd.com/pt/login")
 sleep(tempos['tempo_carregamento'])
@@ -41,9 +47,8 @@ campo_email = navegador.find_element('xpath', '//*[@id="email"]')
 campo_email.send_keys(email_cadastrado)
 campo_senha = navegador.find_element('xpath', '//*[@id="password"]')
 campo_senha.send_keys(senha)
-sai_da_frente = navegador.find_element('xpath', '/html/body/div[3]/div/div/button')
-sai_da_frente.click()
-botao_login = navegador.find_element('xpath', '//*[@id="users-form"]/form/div[5]/input')
+navegador.send_keys("")
+botao_login = navegador.find_element('xpath', '//*[@id="submit-btn"]')
 botao_login.click()
 sleep(tempos['tempo_carregamento'])
 navegador.get("https://www.beecrowd.com.br/judge/pt/runs?answer_id=1")
