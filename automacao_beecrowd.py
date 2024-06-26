@@ -6,7 +6,6 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from time import sleep
 from selenium.webdriver.common.action_chains import ActionChains
-import os
 
 email_cadastrado = os.getenv('EMAIL_CADASTRADO')
 senha = os.getenv('SENHA_CADASTRADA')
